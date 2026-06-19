@@ -112,10 +112,39 @@ pytest tests/
 └── docker-compose.yml    # local Postgres for development
 ```
 
+## Phase 2: Apache Airflow (local orchestration showcase)
+
+Phase 1 (GitHub Actions) is the **deployed, always-running** version of this
+pipeline. Phase 2 demonstrates real orchestration with Apache Airflow,
+**run locally on a laptop** — zero cost, no hosting. The DAG
+(`airflow/dags/weather_pipeline_dag.py`) imports and calls the exact same
+`src/` functions as `pipeline.py`, split into three dependent tasks
+(`extract → transform → load`) so the DAG graph is meaningful — no ETL logic
+is duplicated between the two phases.
+
+It runs on Airflow's `LocalExecutor` (scheduler + webserver + a Postgres
+metadata DB) rather than the heavier `CeleryExecutor` quick-start default,
+since a single-laptop demo doesn't need a distributed worker pool or Redis
+broker.
+
+**Run it:**
+
+```bash
+cd airflow
+docker compose up airflow-init      # first time only: creates metadata DB + admin user
+docker compose up -d airflow-webserver airflow-scheduler
+```
+
+Open http://localhost:8080 (login `airflow` / `airflow`), unpause
+`weather_pipeline`, and trigger a run from the UI — or via the CLI:
+
+```bash
+docker compose exec airflow-scheduler airflow dags trigger weather_pipeline
+```
+
+> _Screenshot of the DAG graph view goes here._
+
 ## Roadmap
 
-- **Phase 2** (in progress): a local Apache Airflow DAG that runs the same
-  `extract → transform → load` logic as separate, dependent tasks — a
-  showcase of real orchestration, run on a laptop at zero cost.
 - **Stretch**: join in Trafikverket traffic data to analyze weather/traffic
   correlation in Skåne; a lightweight dbt layer; a minimal dashboard.
