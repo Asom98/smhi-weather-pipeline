@@ -69,14 +69,10 @@ pytest tests/
 
 ## Screenshots
 
-> _Add these once available — exact steps below._
+- **Successful GitHub Actions run**: <img width="2538" height="1121" alt="Screenshot 2026-06-19 152333" src="https://github.com/user-attachments/assets/02a9c4f9-38d4-4cec-9d50-13fbe401312e" />
 
-- **Successful GitHub Actions run**: go to the
-  [Actions tab](https://github.com/Asom98/smhi-weather-pipeline/actions),
-  open a green run, screenshot the step list with the green checkmarks.
-- **Sample rows in the database**: connect to Neon (e.g. via its SQL editor
-  or `psql`) and run `SELECT * FROM observations LIMIT 10;`, screenshot the
-  result.
+- **Sample rows in the database**: <img width="2557" height="1149" alt="Screenshot 2026-06-19 152148" src="https://github.com/user-attachments/assets/ef8141fa-dfc5-4329-a3d1-ee765d0ce18a" />
+
 
 ## What I learned / design decisions
 
