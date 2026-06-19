@@ -1,7 +1,7 @@
 # SMHI Weather Pipeline
 
 A scheduled batch ETL pipeline that pulls live weather observations from the
-[SMHI Open Data API](https://opendata.smhi.se/apidocs/) (Swedish Meteorological
+[SMHI Open Data API](https://opendata.smhi.se) (Swedish Meteorological
 and Hydrological Institute), transforms them into tidy rows, and loads them
 idempotently into Postgres — running automatically every day with no server
 to manage and no cost.
