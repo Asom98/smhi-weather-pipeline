@@ -142,7 +142,8 @@ Open http://localhost:8080 (login `airflow` / `airflow`), unpause
 docker compose exec airflow-scheduler airflow dags trigger weather_pipeline
 ```
 
-> _Screenshot of the DAG graph view goes here._
+<img width="2458" height="1265" alt="Screenshot 2026-06-19 155624" src="https://github.com/user-attachments/assets/125fbc5b-c326-45d1-ab41-2217407066c9" />
+
 
 ## Roadmap
 
