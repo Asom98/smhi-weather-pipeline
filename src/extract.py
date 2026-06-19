@@ -10,7 +10,7 @@ import logging
 from typing import Any
 
 import httpx
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception
 
 logger = logging.getLogger(__name__)
 
@@ -18,8 +18,17 @@ SMHI_BASE = "https://opendata-download-metobs.smhi.se/api/version/latest"
 REQUEST_TIMEOUT = 30  # seconds
 
 
+def _is_retryable(exc: BaseException) -> bool:
+    """Retry on server errors (5xx) and network issues, but not on 4xx — a
+    404 means the station/parameter combo doesn't exist and won't succeed
+    no matter how many times we ask."""
+    if isinstance(exc, httpx.HTTPStatusError):
+        return exc.response.status_code >= 500
+    return isinstance(exc, httpx.TransportError)
+
+
 @retry(
-    retry=retry_if_exception_type((httpx.HTTPStatusError, httpx.TransportError)),
+    retry=retry_if_exception(_is_retryable),
     stop=stop_after_attempt(3),
     wait=wait_exponential(multiplier=1, min=2, max=10),
     reraise=True,
